@@ -38,7 +38,14 @@ async function run() {
         const cursor = allSpotsCollection.find( );
         const result = await cursor.toArray();
         res.send(result)
-      })
+      });
+
+      app.get('/viewDetails/:id', async(req, res) => {
+      const id = req.params.id ;
+      const query = {_id : new ObjectId(id)};
+      const result = await coffeeCollection.findOne(query);
+      res.send(result)
+    })
 
     app.post('/touristSpot', async(req, res) => {
         const allSpot = req.body ;
