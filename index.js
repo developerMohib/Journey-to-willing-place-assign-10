@@ -43,7 +43,7 @@ async function run() {
       app.get('/viewDetails/:id', async(req, res) => {
       const id = req.params.id ;
       const query = {_id : new ObjectId(id)};
-      const result = await coffeeCollection.findOne(query);
+      const result = await allSpotsCollection.findOne(query);
       res.send(result)
     })
 
@@ -51,9 +51,36 @@ async function run() {
     app.get('/touristSpot/:id', async(req, res) => {
       const id = req.params.id ;
       const query = {_id : new ObjectId(id)};
-      const result = await coffeeCollection.findOne(query);
+      const result = await allSpotsCollection.findOne(query);
       res.send(result)
     })
+    app.put('/touristSpot/:id', async(req, res) => {
+      const id = req.params.id ;
+      const filter = {_id : new ObjectId (id)} ;
+      const options = {upsert : true} ;
+      const updateSpotDetails = req.body;
+
+      //{countryName, spotName, location, cost, seasonality, traveTime, photoTitle, visitor, photoUrl,details}
+      //
+      const updateDoc = {
+        $set : {
+          countryName : updateSpotDetails.countryName,
+          spotName : updateSpotDetails.spotName,
+          location : updateSpotDetails.location,
+          cost : updateSpotDetails.cost,
+          seasonality : updateSpotDetails.seasonality,
+          traveTime : updateSpotDetails.traveTime,
+          photoTitle : updateSpotDetails.photoTitle,
+          visitor : updateSpotDetails.visitor,
+          photoUrl : updateSpotDetails.photoUrl,
+          details : updateSpotDetails.details,
+        }
+      }
+      const result = await allSpotsCollection.updateOne(filter, updateDoc, options);
+      res.send(result)
+    })
+
+
 
     app.post('/touristSpot', async(req, res) => {
         const allSpot = req.body ;
