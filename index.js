@@ -47,12 +47,12 @@ async function run() {
       res.send(result)
     })
 
-      app.get('/touristSpot/:email', async(req, res) => {
-      const email = req.params.email ;
-      console.log(email)
-      const result = await coffeeCollection.findOne(email).toArray();
-      res.send(result)
-    })
+    //   app.get('/touristSpot/:email', async(req, res) => {
+    //   const email = req.params.email ;
+    //   console.log(email)
+    //   const result = await coffeeCollection.findOne(email).toArray();
+    //   res.send(result)
+    // })
 
     app.post('/touristSpot', async(req, res) => {
         const allSpot = req.body ;
@@ -60,6 +60,17 @@ async function run() {
         const result = await allSpotsCollection.insertOne(allSpot);
         res.send(result)
     } )
+
+    // data delete 
+    app.delete('/touristSpot/:id', async (req, res) => {
+      const id = req.params.id;
+      console.log(id, 'dynamic id');
+      const query = { _id : new ObjectId(id) };
+      const result = await allSpotsCollection.deleteOne(query);
+      res.send(result)
+    })
+
+
     app.get('/health', (req, res) => {
       res.send('Travelling server has been coming health soon!')
     })
