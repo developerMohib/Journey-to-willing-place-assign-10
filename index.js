@@ -34,19 +34,31 @@ async function run() {
 
     const database = client.db("spotstDB");
     const allSpotsCollection = database.collection("allSpots");
+    const countryCollection = database.collection("countryName");
 
+    
     app.get('/touristSpot', async(req, res) => {
         const cursor = allSpotsCollection.find( );
         const result = await cursor.toArray();
         res.send(result)
       });
 
-    //   app.get('/viewDetails/:id', async(req, res) => {
-    //   const id = req.params.id ;
-    //   const query = {_id : new ObjectId(id)};
-    //   const result = await allSpotsCollection.findOne(query);
-    //   res.send(result)
-    // })
+
+// get data with country name 
+// app.get('/countrySpot', async(req, res) => {
+//   const cursor = countryCollection.find( );
+//   const result = await cursor.toArray();
+//   res.send(result)
+// });
+
+    // find with country name 
+    app.get('/countries', async(req, res) => {
+      const cursor = countryCollection.find();
+      const result = await cursor.toArray();
+      res.send(result)
+    })
+
+
 
     // update data 
     app.get('/touristSpot/:id', async(req, res) => {
@@ -63,7 +75,7 @@ async function run() {
       const updateSpotDetails = req.body;
 
       //{countryName, spotName, location, cost, seasonality, traveTime, photoTitle, visitor, photoUrl,details}
-      
+
       const updateDoc = {
         $set : {
           countryName : updateSpotDetails.countryName,
@@ -90,6 +102,14 @@ async function run() {
         const result = await allSpotsCollection.insertOne(allSpot);
         res.send(result)
     } )
+
+
+    // send data by country name 
+    app.post('/countries', async(req, res) => {
+      const countryName = req.body ;
+      const result = await countryCollection.insertMany(countryName);
+      res.send(result)
+  } )
 
     // data delete 
     app.delete('/touristSpot/:id', async (req, res) => {
