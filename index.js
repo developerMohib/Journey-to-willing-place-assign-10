@@ -5,17 +5,18 @@ require ('dotenv').config();
 const port = process.env.PORT || 5000;
 
 app.use(cors())
+// const corsConfig = {
+//   origin: '*',
+//   credentials: true,
+//   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+//   }
+//   app.use(cors(corsConfig))
+
 app.use(express.json())
 
-// const touristSpot = [
-//     {name: 'mohib'},
-//     {name: 'mohihhhhh'},
-//     {name: 'mohihhh'}
-// ]
-
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ylmjbhk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-console.log(process.env.DB_USER, uri)
+// console.log(process.env.DB_USER, uri)
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -40,12 +41,12 @@ async function run() {
         res.send(result)
       });
 
-      app.get('/viewDetails/:id', async(req, res) => {
-      const id = req.params.id ;
-      const query = {_id : new ObjectId(id)};
-      const result = await allSpotsCollection.findOne(query);
-      res.send(result)
-    })
+    //   app.get('/viewDetails/:id', async(req, res) => {
+    //   const id = req.params.id ;
+    //   const query = {_id : new ObjectId(id)};
+    //   const result = await allSpotsCollection.findOne(query);
+    //   res.send(result)
+    // })
 
     // update data 
     app.get('/touristSpot/:id', async(req, res) => {
@@ -56,12 +57,13 @@ async function run() {
     })
     app.put('/touristSpot/:id', async(req, res) => {
       const id = req.params.id ;
+      console.log(id);
       const filter = {_id : new ObjectId (id)} ;
       const options = {upsert : true} ;
       const updateSpotDetails = req.body;
 
       //{countryName, spotName, location, cost, seasonality, traveTime, photoTitle, visitor, photoUrl,details}
-      //
+      
       const updateDoc = {
         $set : {
           countryName : updateSpotDetails.countryName,
