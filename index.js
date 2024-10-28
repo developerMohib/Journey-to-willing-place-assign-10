@@ -67,6 +67,7 @@ async function run() {
       const result = await allSpotsCollection.findOne(query);
       res.send(result)
     })
+    
     app.put('/touristSpot/:id', async(req, res) => {
       const id = req.params.id ;
       console.log(id);
@@ -98,7 +99,6 @@ async function run() {
 
     app.post('/touristSpot', async(req, res) => {
         const allSpot = req.body ;
-        console.log(allSpot);
         const result = await allSpotsCollection.insertOne(allSpot);
         res.send(result)
     } )

@@ -1,0 +1,2 @@
+DB_USER=mohib-the-maziest
+DB_PASS=IIKtxR9oAUzxxtTN
